@@ -1,130 +1,89 @@
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
-import org.junit.Before;
-
-import java.io.File;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+
 
 public class PatchUserProfile {
 
-    CreateUser createUser = new CreateUser();
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
-        createUser.deliteUser();
+    public UserProfile getChangeMailUserProfile() {
+        return changeMailUserProfile;
+    }
+    public UserProfile getChangeNameUserProfile() {
+        return changeNameUserProfile;
     }
 
+    UserProfile changeMailUserProfile = new UserProfile("gena.chebotar9@mail.ru","GoLittleRockStar","MusicApple1");
+    UserProfile changeNameUserProfile = new UserProfile("gena.chebotar@mail.ru","GoLittleRockStar","MusicApple22");
 
-    File changeMailUserProfile = new File("src/main/resources/PatchUserProfile/changeMailUserProfile.json");
-    File changeNameUserProfile = new File("src/main/resources/PatchUserProfile/changeNameUserProfile.json");
-    File correctUser = new File("src/main/resources/CreateUser/correctUser.json");
-
-
-    public String responseToken() {
+    public String responseToken(UserProfile userProfile) {
         String response =
                 given()
                         .header("Content-type", "application/json")
-                        .body(correctUser)
-                        .post("/api/auth/login")
+                        .body(userProfile)
+                        .post(StaticValues.API_AUTH)
                         .then().extract().path("accessToken").toString().replace("Bearer ", "");
         return response;
     }
-
-
-    public void changeNameUserProfileAuth() {
-
-
+    public void changeNameUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
         given()
-                .auth().oauth2(responseToken())
+                .auth().oauth2(responseToken(userProfile))
                 .header("Content-type", "application/json")
-                .body(changeNameUserProfile)
-                .patch("/api/auth/user")
+                .body(changeData)
+                .patch(StaticValues.API_PATH)
                 .then().assertThat()
-                .body("user.name", equalTo("MusicApple12"))
+                .body("user.name", equalTo("MusicApple22"))
+                .and()
+                .statusCode(200);
+    }
+    public void changeMailUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
+        given()
+                .auth().oauth2(responseToken(userProfile))
+                .header("Content-type", "application/json")
+                .body(changeData)
+                .patch(StaticValues.API_PATH)
+                .then().assertThat()
+                .body("user.email", equalTo("gena.chebotar9@mail.ru"))
                 .and()
                 .statusCode(200);
     }
 
 
-
-    public void changeMailUserProfileAuth() {
-
-        given()
-                .auth().oauth2(responseToken())
-                .header("Content-type", "application/json")
-                .body(changeMailUserProfile)
-                .patch("/api/auth/user")
-                .then().assertThat()
-                .body("user.email", equalTo("gena.chebotar@mail.ru"))
-                .and()
-                .statusCode(200);
-    }
-
-
-    public void changeMailExistsUserProfileAuth() {
+    public void changeMailExistsUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
 
         given()
-                .auth().oauth2(responseToken())
+                .auth().oauth2(responseToken(userProfile))
                 .header("Content-type", "application/json")
-                .body(changeMailUserProfile)
-                .patch("/api/auth/user")
-                .then().assertThat()
+                .body(changeData)
+                .patch(StaticValues.API_PATH)
+                .then().assertThat().log().all()
                 .body("message", equalTo("User with such email already exists"))
                 .and()
                 .statusCode(403);
     }
 
-
-    public void changeNameUserProfileOutAuth() {
-
+    public void changeNameUserProfileOutAuth(UserProfile changeData) {
         given()
-
                 .header("Content-type", "application/json")
-                .body(changeNameUserProfile)
-                .patch("/api/auth/user")
+                .body(changeData)
+                .patch(StaticValues.API_PATH)
                 .then()
                 .body("message", equalTo("You should be authorised"))
                 .and()
                 .statusCode(401);
     }
 
-    public void changeMailUserProfileOutAuth() {
-
-
+    public void changeMailUserProfileOutAuth(UserProfile changeData) {
         given()
                 .header("Content-type", "application/json")
-                .body(changeMailUserProfile)
-                .patch("/api/auth/user")
+                .body(changeData)
+                .patch(StaticValues.API_PATH)
                 .then()
                 .body("message", equalTo("You should be authorised"))
                 .and()
                 .statusCode(401);
-    }
-
-    public void deliteUsersPatchMail() {
-
-
-        Response response = given()
-                .header("Content-type", "application/json")
-                .body(changeMailUserProfile)
-                .post("/api/auth/login");
-
-        if (response.path("accessToken") != null) {
-            given()
-                    .auth().oauth2(response.then().extract().path("accessToken").toString().replace("Bearer ", ""))
-                    .delete("/api/auth/user")
-                    .then().assertThat().body("message", equalTo("User successfully removed"))
-                    .and()
-                    .statusCode(202)
-                    .and().extract().body();
-        }
-
-
     }
 }
+
 
 
