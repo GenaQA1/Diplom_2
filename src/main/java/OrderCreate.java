@@ -1,6 +1,6 @@
-import io.restassured.RestAssured;
-import org.junit.Before;
 
+
+import io.restassured.response.Response;
 
 import java.util.List;
 
@@ -12,6 +12,13 @@ public class OrderCreate {
     Order orderWithIngredients = new Order(List.of("61c0c5a71d1f82001bdaaa6f","61c0c5a71d1f82001bdaaa74"));
     Order orderIncorrectIngredients = new Order(List.of("61c0c5a71d1f82001bdaaa6"));
 
+    public Order getNullOrder() {
+        return nullOrder;
+    }
+
+    Order nullOrder = new Order(List.of());
+
+
     public Order getOrderWithIngredients() {
         return orderWithIngredients;
     }
@@ -19,62 +26,57 @@ public class OrderCreate {
         return orderIncorrectIngredients;
     }
 
-    @Before
-    public void setUp() {
-        RestAssured.baseURI = "https://stellarburgers.nomoreparties.site";
-    }
 
     public String responseToken(UserProfile userProfile) {
         String response =
                 given()
                         .header("Content-type", "application/json")
                         .body(userProfile)
-                        .post(StaticValues.API_AUTH)
+                        .post(URLs.API_AUTH)
                         .then().extract().path("accessToken").toString().replace("Bearer ", "");
         return response;
     }
 
-    public void ordersUsersInAuth(UserProfile userProfile, Order order){
-        given()
+    public Response orderUsersInAuth(UserProfile userProfile, Order order){
+        Response response = given()
                 .auth().oauth2(responseToken(userProfile))
                 .header("Content-type", "application/json")
                 .body(order)
-                .post(StaticValues.API_ORDER)
-                .then().assertThat()
+                .post(URLs.API_ORDER);
+        return response;
+    }
+
+    public void ordersUsersInAuth(Response response){
+                response.then().assertThat()
                 .body("order", notNullValue())
                 .and()
                 .statusCode(200);
     }
 
-    public void ordersUsersOutAuth(Order order){
-        given()
+    public Response orderUsersOutAuth(Order order){
+        Response response = given()
                 .header("Content-type", "application/json")
                 .body(order)
-                .post(StaticValues.API_ORDER)
-                .then().assertThat()
+                .post(URLs.API_ORDER);
+        return response;
+    }
+
+    public void ordersUsersOutAuth(Response response){
+                response.then().assertThat()
                 .body("order.ingredients", nullValue()).and().assertThat().body("order.number",notNullValue())
                 .and()
                 .statusCode(200);
     }
 
-    public void ordersUsersWithAuthOutIngredients(UserProfile userProfile){
-        given()
-                .auth().oauth2(responseToken(userProfile))
-                .header("Content-type", "application/json")
-                .post(StaticValues.API_ORDER)
-                .then().assertThat()
+    public void ordersUsersWithAuthOutIngredients(Response response){
+               response.then().assertThat()
                 .body("message", equalTo("Ingredient ids must be provided"))
                 .and()
                 .statusCode(400);
     }
 
-    public void ordersUsersWithAuthIncorrectIngredients(UserProfile userProfile, Order order){
-        given()
-                .auth().oauth2(responseToken(userProfile))
-                .header("Content-type", "application/json")
-                .body(order)
-                .post(StaticValues.API_ORDER)
-                .then()
+    public void ordersUsersWithAuthIncorrectIngredients(Response response){
+                response.then()
                 .statusCode(500);
     }
 

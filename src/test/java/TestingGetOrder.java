@@ -6,32 +6,35 @@ import org.junit.Test;
 
 public class TestingGetOrder {
 
-    CreateUser createUser = new CreateUser();
+    UserClient userClient = new UserClient();
     AuthUser authUser = new AuthUser();
     GetOrder getOrder = new GetOrder();
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = StaticValues.URL_BASE;
-        createUser.deleteUser(authUser.responseAuthUser(createUser.getCorrectUser()));
+        RestAssured.baseURI = URLs.URL_BASE;
     }
 
     @After
     public void setDown() {
-        createUser.deleteUser(authUser.responseAuthUser(createUser.getCorrectUser()));
+        userClient.deleteUser(authUser.authUser(userClient.getCorrectUser()));
     }
 
     @Test
     @DisplayName("Check get order with authorization user")
     public void getOrderWithAuth(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        getOrder.getOrderAuthUser(createUser.getCorrectUser());
+        userClient.createUser(userClient.getCorrectUser());
+        getOrder.getOrderAuthUser(getOrder.orderAuthUser(userClient.getCorrectUser()));
     }
 
     @Test
     @DisplayName("Check get order out authorization user")
     public void getOrderOutAuth(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        getOrder.getOrderOutAuthUser();
+        userClient.createUser(userClient.getCorrectUser());
+        getOrder.getOrderOutAuthUser(getOrder.orderOutAuth());
     }
+
+
+
+
 }

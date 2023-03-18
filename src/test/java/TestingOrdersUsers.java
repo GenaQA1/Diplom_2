@@ -7,46 +7,45 @@ import org.junit.Test;
 public class TestingOrdersUsers {
 
 
-    CreateUser createUser = new CreateUser();
+    UserClient userClient = new UserClient();
     AuthUser authUser = new AuthUser();
     OrderCreate orderCreate = new OrderCreate();
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = StaticValues.URL_BASE;
-        createUser.deleteUser(authUser.responseAuthUser(createUser.getCorrectUser()));
+        RestAssured.baseURI = URLs.URL_BASE;
     }
 
     @After
     public void setDown() {
-        createUser.deleteUser(authUser.responseAuthUser(createUser.getCorrectUser()));
+        userClient.deleteUser(authUser.authUser(userClient.getCorrectUser()));
     }
 
 
     @Test
     @DisplayName("Check create order with authorization user and with Ingredient")
     public void createOrderUsersWithAuthWithIngredient(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        orderCreate.ordersUsersInAuth(createUser.getCorrectUser(),orderCreate.getOrderWithIngredients());
+        userClient.createUser(userClient.getCorrectUser());
+        orderCreate.ordersUsersInAuth(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderWithIngredients()));
     }
 
     @Test
     @DisplayName("Check create order out authorization user and with Ingredient")
     public void createOrderUsersOutAuthWithIngredient(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        orderCreate.ordersUsersOutAuth(orderCreate.getOrderWithIngredients());
+        userClient.createUser(userClient.getCorrectUser());
+        orderCreate.ordersUsersOutAuth(orderCreate.orderUsersOutAuth(orderCreate.getOrderWithIngredients()));
     }
 
     @Test
     @DisplayName("Check create order with authorization user and out Ingredient")
     public void createOrderUsersWithAuthOutIngredient(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        orderCreate.ordersUsersWithAuthOutIngredients(createUser.getCorrectUser());
+        userClient.createUser(userClient.getCorrectUser());
+        orderCreate.ordersUsersWithAuthOutIngredients(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getNullOrder()));
     }
     @Test
     @DisplayName("Check create order with authorization user and incorrect Ingredient")
     public void createOrderUsersWithAuthIncorrectIngredient(){
-        createUser.responseCreateUsers(createUser.getCorrectUser());
-        orderCreate.ordersUsersWithAuthIncorrectIngredients(createUser.getCorrectUser(),orderCreate.getOrderIncorrectIngredients());
+        userClient.createUser(userClient.getCorrectUser());
+        orderCreate.ordersUsersWithAuthIncorrectIngredients(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderIncorrectIngredients()));
     }
 }

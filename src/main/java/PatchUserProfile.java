@@ -1,4 +1,6 @@
 
+import io.restassured.response.Response;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -21,64 +23,58 @@ public class PatchUserProfile {
                 given()
                         .header("Content-type", "application/json")
                         .body(userProfile)
-                        .post(StaticValues.API_AUTH)
+                        .post(URLs.API_AUTH)
                         .then().extract().path("accessToken").toString().replace("Bearer ", "");
         return response;
     }
-    public void changeNameUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
-        given()
+
+    public Response pathUserAuth(UserProfile userProfile, UserProfile changeData){
+        Response response = given()
                 .auth().oauth2(responseToken(userProfile))
                 .header("Content-type", "application/json")
                 .body(changeData)
-                .patch(StaticValues.API_PATH)
-                .then().assertThat()
+                .patch(URLs.API_PATH);
+        return response;
+    }
+
+
+    public void checkChangeNameUserProfileAuth(Response response) {
+                response.then().assertThat()
                 .body("user.name", equalTo("MusicApple22"))
                 .and()
                 .statusCode(200);
     }
-    public void changeMailUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
-        given()
-                .auth().oauth2(responseToken(userProfile))
-                .header("Content-type", "application/json")
-                .body(changeData)
-                .patch(StaticValues.API_PATH)
-                .then().assertThat()
+    public void checkChangeMailUserProfileAuth(Response response) {
+               response.then().assertThat()
                 .body("user.email", equalTo("gena.chebotar9@mail.ru"))
                 .and()
                 .statusCode(200);
     }
 
 
-    public void changeMailExistsUserProfileAuth(UserProfile userProfile, UserProfile changeData) {
-
-        given()
-                .auth().oauth2(responseToken(userProfile))
-                .header("Content-type", "application/json")
-                .body(changeData)
-                .patch(StaticValues.API_PATH)
-                .then().assertThat().log().all()
+    public void checkChangeMailExistsUserProfileAuth(Response response) {
+        response.then().assertThat().log().all()
                 .body("message", equalTo("User with such email already exists"))
                 .and()
                 .statusCode(403);
     }
 
-    public void changeNameUserProfileOutAuth(UserProfile changeData) {
-        given()
+    public Response pathUserOutAuth(UserProfile changeData){
+        Response response =  given()
                 .header("Content-type", "application/json")
                 .body(changeData)
-                .patch(StaticValues.API_PATH)
-                .then()
+                .patch(URLs.API_PATH);
+        return response;
+    }
+    public void checkChangeNameUserProfileOutAuth(Response response) {
+                response.then()
                 .body("message", equalTo("You should be authorised"))
                 .and()
                 .statusCode(401);
     }
 
-    public void changeMailUserProfileOutAuth(UserProfile changeData) {
-        given()
-                .header("Content-type", "application/json")
-                .body(changeData)
-                .patch(StaticValues.API_PATH)
-                .then()
+    public void checkChangeMailUserProfileOutAuth(Response response) {
+                response.then()
                 .body("message", equalTo("You should be authorised"))
                 .and()
                 .statusCode(401);

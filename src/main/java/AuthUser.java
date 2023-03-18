@@ -4,11 +4,11 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class AuthUser {
 
-    public Response responseAuthUser(UserProfile userProfile){
+    public Response authUser(UserProfile userProfile){
             Response response = given()
                     .header("Content-type", "application/json")
                     .body(userProfile).log().all()
-                    .post(StaticValues.API_AUTH);
+                    .post(URLs.API_AUTH);
             return response;
         }
 
