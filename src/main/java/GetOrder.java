@@ -7,28 +7,18 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class GetOrder {
 
-
-    public String responseToken(UserProfile userProfile) {
-        String response =
-                given()
-                        .header("Content-type", "application/json")
-                        .body(userProfile)
-                        .post(URLs.API_AUTH)
-                        .then().extract().path("accessToken").toString().replace("Bearer ", "");
-        return response;
-    }
-
+    AuthUser authUser = new AuthUser();
 
     public Response orderAuthUser(UserProfile userProfile){
         Response response = given()
-                .auth().oauth2(responseToken(userProfile)).log().all()
+                .auth().oauth2(authUser.responseToken(userProfile)).log().all()
                 .header("Content-type", "application/json")
                 .get(URLs.API_ORDER);
         return response;
     }
 
 
-    public void getOrderAuthUser(Response response){
+    public void checkCorrectResponseGetOrder(Response response){
         response.then().assertThat()
                 .body("success",equalTo(true))
                 .and()
@@ -36,13 +26,14 @@ public class GetOrder {
     }
 
 
-    public Response orderOutAuth(){
-        Response response =given()
+    public Response orderWithoutAuth(){
+        Response response =
+                given()
                 .get(URLs.API_ORDER);
         return response;
     }
 
-    public void getOrderOutAuthUser(Response response){
+    public void checkCorrectResponseOrderWithoutAuthUser(Response response){
         response.then().assertThat()
                 .body("message",equalTo("You should be authorised"))
                 .and()

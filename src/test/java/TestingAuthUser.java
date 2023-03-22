@@ -24,21 +24,20 @@ public class TestingAuthUser {
     @DisplayName("Check authorization correct user")
     public void checkAuthCorrectUser(){
         userClient.createUser(userClient.getCorrectUser());
-        authUser.checkCorrectResponseAnswer(authUser.authUser(userClient.getCorrectUser()));
+        authUser.checkResponseCorrectAuth(authUser.authUser(userClient.getCorrectUser()));
     }
 
     @Test
     @DisplayName("Check authorization user with out email")
-
     public void checkAuthUserOutMail(){
         userClient.createUser(userClient.getCorrectUser());
-        authUser.checkCorrectErrorResponse(authUser.authUser(userClient.getNotFieldMail()));
+        authUser.checkResponseIncorrectAuth(authUser.authUser(userClient.getUserWithoutMail()));
     }
 
     @Test
     @DisplayName("Check authorization user with out password")
     public void checkAuthUserOutPassword(){
         userClient.createUser(userClient.getCorrectUser());
-        authUser.checkCorrectErrorResponse(authUser.authUser(userClient.getNotFieldPassword()));
+        authUser.checkResponseIncorrectAuth(authUser.authUser(userClient.getUserWithoutPassword()));
     }
 }

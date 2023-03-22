@@ -24,40 +24,40 @@ public class TestingPatchUserProfile {
 
     @Test
     @DisplayName("checking the change of the authorized user name")
-    public void patchNameUserProfileInAuth() {
+    public void changeNameUserProfileInAuth() {
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeNameUserProfileAuth(patchUserProfile.pathUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeNameUserProfile()));
+        patchUserProfile.checkChangeNameUserProfileAuth(patchUserProfile.changeUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeNameUserProfile()));
     }
 
     @Test
     @DisplayName("checking the change of the authorized user email")
-    public void patchEmailUserProfileInAuth() {
+    public void changeEmailUserProfileInAuth() {
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeMailUserProfileAuth(patchUserProfile.pathUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
+        patchUserProfile.checkChangeMailUserProfileAuth(patchUserProfile.changeUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
     }
 
     @Test
     @DisplayName("checking the receipt of an error for changing the mail to an existing one")
-    public void patchMailExistsUserProfileInAuth() {
+    public void changeMailExistsUserProfileInAuth() {
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeMailUserProfileAuth(patchUserProfile.pathUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
+        patchUserProfile.checkChangeMailUserProfileAuth(patchUserProfile.changeUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeMailExistsUserProfileAuth(patchUserProfile.pathUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
+        patchUserProfile.checkChangeMailExistsUserProfileAuth(patchUserProfile.changeUserAuth(userClient.getCorrectUser(),patchUserProfile.getChangeMailUserProfile()));
     }
 
     @Test
     @DisplayName("checking the user name change without authorization")
-    public void patchNameUserProfileOutAuth() {
+    public void changeNameUserProfileOutAuth() {
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeNameUserProfileOutAuth(patchUserProfile.pathUserOutAuth(patchUserProfile.getChangeNameUserProfile()));
+        patchUserProfile.checkChangeNameUserProfileOutAuth(patchUserProfile.changeUserOutAuth(patchUserProfile.getChangeNameUserProfile()));
     }
 
 
     @Test
     @DisplayName("checking the user email change without authorization")
-    public void patchEmailUserProfileOutAuth(){
+    public void changeEmailUserProfileOutAuth(){
         userClient.createUser(userClient.getCorrectUser());
-        patchUserProfile.checkChangeMailUserProfileOutAuth(patchUserProfile.pathUserOutAuth(patchUserProfile.getChangeMailUserProfile()));
+        patchUserProfile.checkChangeMailUserProfileOutAuth(patchUserProfile.changeUserOutAuth(patchUserProfile.getChangeMailUserProfile()));
     }
 }
 

@@ -9,25 +9,25 @@ public class UserClient {
 
 
     UserProfile correctUser = new UserProfile("gena.chebotar@mail.ru", "GoLittleRockStar", "MusicApple1");
-    UserProfile notFieldMail = new UserProfile(null, "GoLittleRockStar", "MusicApple1");
-    UserProfile notFieldPassword = new UserProfile("gena.chebotar@mail.ru", null, "MusicApple1");
-    UserProfile notFieldName = new UserProfile("gena.chebotar@mail.ru", "GoLittleRockStar", null);
+    UserProfile userWithoutMail = new UserProfile(null, "GoLittleRockStar", "MusicApple1");
+    UserProfile userWithoutPassword = new UserProfile("gena.chebotar@mail.ru", null, "MusicApple1");
+    UserProfile userWithoutName = new UserProfile("gena.chebotar@mail.ru", "GoLittleRockStar", null);
 
 
 
     public UserProfile getCorrectUser() {
         return correctUser;
     }
-    public UserProfile getNotFieldMail() {
-        return notFieldMail;
+    public UserProfile getUserWithoutMail() {
+        return userWithoutMail;
     }
 
-    public UserProfile getNotFieldPassword() {
-        return notFieldPassword;
+    public UserProfile getUserWithoutPassword() {
+        return userWithoutPassword;
     }
 
-    public UserProfile getNotFieldName() {
-        return notFieldName;
+    public UserProfile getUserWithoutName() {
+        return userWithoutName;
     }
 
     /*Подобным образом я хотел реализовать рандомные данные для аккаунта. Но когда я к примеру начинаю использовать его в другом методе, то он генерит новые данные

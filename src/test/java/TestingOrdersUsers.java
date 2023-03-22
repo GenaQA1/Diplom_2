@@ -26,26 +26,26 @@ public class TestingOrdersUsers {
     @DisplayName("Check create order with authorization user and with Ingredient")
     public void createOrderUsersWithAuthWithIngredient(){
         userClient.createUser(userClient.getCorrectUser());
-        orderCreate.ordersUsersInAuth(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderWithIngredients()));
+        orderCreate.checkResponseOrdersUsersInAuth(orderCreate.createOrderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderWithIngredients()));
     }
 
     @Test
     @DisplayName("Check create order out authorization user and with Ingredient")
     public void createOrderUsersOutAuthWithIngredient(){
         userClient.createUser(userClient.getCorrectUser());
-        orderCreate.ordersUsersOutAuth(orderCreate.orderUsersOutAuth(orderCreate.getOrderWithIngredients()));
+        orderCreate.checkResponseOrdersUsersWithoutAuth(orderCreate.createOrderUsersWithoutAuth(orderCreate.getOrderWithIngredients()));
     }
 
     @Test
     @DisplayName("Check create order with authorization user and out Ingredient")
     public void createOrderUsersWithAuthOutIngredient(){
         userClient.createUser(userClient.getCorrectUser());
-        orderCreate.ordersUsersWithAuthOutIngredients(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getNullOrder()));
+        orderCreate.checkOrdersUsersWithAuthWithoutIngredients(orderCreate.createOrderUsersInAuth(userClient.getCorrectUser(),orderCreate.getNullOrder()));
     }
     @Test
     @DisplayName("Check create order with authorization user and incorrect Ingredient")
     public void createOrderUsersWithAuthIncorrectIngredient(){
         userClient.createUser(userClient.getCorrectUser());
-        orderCreate.ordersUsersWithAuthIncorrectIngredients(orderCreate.orderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderIncorrectIngredients()));
+        orderCreate.checkOrdersUsersWithAuthIncorrectIngredients(orderCreate.createOrderUsersInAuth(userClient.getCorrectUser(),orderCreate.getOrderIncorrectIngredients()));
     }
 }

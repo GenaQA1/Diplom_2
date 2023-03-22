@@ -35,18 +35,18 @@ public class TestingUserClient {
     @Test
     @DisplayName("Check create user out email")
     public void registrationUserOutEmail(){
-        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getNotFieldMail()));
+        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutMail()));
     }
 
     @Test
     @DisplayName("Check create user out password")
     public void registrationUserOutPassword(){
-        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getNotFieldPassword()));
+        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutPassword()));
     }
 
     @Test
     @DisplayName("Check create user out name")
     public void registrationUserOutName(){
-        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getNotFieldName()));
+        userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutName()));
     }
 }

@@ -7,6 +7,11 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class PatchUserProfile {
 
+AuthUser authUser = new AuthUser();
+
+
+    UserProfile changeMailUserProfile = new UserProfile("gena.chebotar9@mail.ru","GoLittleRockStar","MusicApple1");
+    UserProfile changeNameUserProfile = new UserProfile("gena.chebotar@mail.ru","GoLittleRockStar","MusicApple22");
 
     public UserProfile getChangeMailUserProfile() {
         return changeMailUserProfile;
@@ -15,22 +20,9 @@ public class PatchUserProfile {
         return changeNameUserProfile;
     }
 
-    UserProfile changeMailUserProfile = new UserProfile("gena.chebotar9@mail.ru","GoLittleRockStar","MusicApple1");
-    UserProfile changeNameUserProfile = new UserProfile("gena.chebotar@mail.ru","GoLittleRockStar","MusicApple22");
-
-    public String responseToken(UserProfile userProfile) {
-        String response =
-                given()
-                        .header("Content-type", "application/json")
-                        .body(userProfile)
-                        .post(URLs.API_AUTH)
-                        .then().extract().path("accessToken").toString().replace("Bearer ", "");
-        return response;
-    }
-
-    public Response pathUserAuth(UserProfile userProfile, UserProfile changeData){
+    public Response changeUserAuth(UserProfile userProfile, UserProfile changeData){
         Response response = given()
-                .auth().oauth2(responseToken(userProfile))
+                .auth().oauth2(authUser.responseToken(userProfile))
                 .header("Content-type", "application/json")
                 .body(changeData)
                 .patch(URLs.API_PATH);
@@ -59,7 +51,7 @@ public class PatchUserProfile {
                 .statusCode(403);
     }
 
-    public Response pathUserOutAuth(UserProfile changeData){
+    public Response changeUserOutAuth(UserProfile changeData){
         Response response =  given()
                 .header("Content-type", "application/json")
                 .body(changeData)
