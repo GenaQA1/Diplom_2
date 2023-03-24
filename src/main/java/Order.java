@@ -3,7 +3,7 @@ import java.util.List;
 public class Order {
 
 
-    public List <String> ingredients ;
+    private List <String> ingredients ;
 
 
     public List<String> getIngredients() {

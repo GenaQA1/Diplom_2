@@ -30,18 +30,20 @@ AuthUser authUser = new AuthUser();
     }
 
 
-    public void checkChangeNameUserProfileAuth(Response response) {
+    public void checkChangeDataUserProfileAuth(Response response, String body, String equalTo) {
                 response.then().assertThat()
-                .body("user.name", equalTo("MusicApple22"))
+                .body(body, equalTo(equalTo))
                 .and()
                 .statusCode(200);
     }
-    public void checkChangeMailUserProfileAuth(Response response) {
-               response.then().assertThat()
-                .body("user.email", equalTo("gena.chebotar9@mail.ru"))
-                .and()
-                .statusCode(200);
-    }
+
+    //Выше метод один для всех случаев.
+//    public void checkChangeMailUserProfileAuth(Response response,String body, String equalTo) {
+//               response.then().assertThat()
+//                .body(body, equalTo(equalTo))
+//                .and()
+//                .statusCode(200);
+//    }
 
 
     public void checkChangeMailExistsUserProfileAuth(Response response) {
@@ -51,21 +53,21 @@ AuthUser authUser = new AuthUser();
                 .statusCode(403);
     }
 
-    public Response changeUserOutAuth(UserProfile changeData){
+    public Response changeUserWithoutAuth(UserProfile changeData){
         Response response =  given()
                 .header("Content-type", "application/json")
                 .body(changeData)
                 .patch(URLs.API_PATH);
         return response;
     }
-    public void checkChangeNameUserProfileOutAuth(Response response) {
-                response.then()
-                .body("message", equalTo("You should be authorised"))
-                .and()
-                .statusCode(401);
-    }
+//    public void checkChangeNameUserProfileWithoutAuth(Response response) {
+//                response.then()
+//                .body("message", equalTo("You should be authorised"))
+//                .and()
+//                .statusCode(401);
+//    }
 
-    public void checkChangeMailUserProfileOutAuth(Response response) {
+    public void checkChangeDataUserProfileWithoutAuth(Response response) {
                 response.then()
                 .body("message", equalTo("You should be authorised"))
                 .and()

@@ -28,14 +28,14 @@ public class TestingAuthUser {
     }
 
     @Test
-    @DisplayName("Check authorization user with out email")
+    @DisplayName("Check authorization user without email")
     public void checkAuthUserOutMail(){
         userClient.createUser(userClient.getCorrectUser());
         authUser.checkResponseIncorrectAuth(authUser.authUser(userClient.getUserWithoutMail()));
     }
 
     @Test
-    @DisplayName("Check authorization user with out password")
+    @DisplayName("Check authorization user without password")
     public void checkAuthUserOutPassword(){
         userClient.createUser(userClient.getCorrectUser());
         authUser.checkResponseIncorrectAuth(authUser.authUser(userClient.getUserWithoutPassword()));

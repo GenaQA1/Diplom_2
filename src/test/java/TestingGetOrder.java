@@ -28,7 +28,7 @@ public class TestingGetOrder {
     }
 
     @Test
-    @DisplayName("Check get order out authorization user")
+    @DisplayName("Check get order Without authorization user")
     public void getOrderOutAuth(){
         userClient.createUser(userClient.getCorrectUser());
         getOrder.checkCorrectResponseOrderWithoutAuthUser(getOrder.orderWithoutAuth());
