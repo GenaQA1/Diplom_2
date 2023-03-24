@@ -47,7 +47,7 @@ public class TestingPatchUserProfile {
 
     @Test
     @DisplayName("checking the user name change without authorization")
-    public void changeNameUserProfileOutAuth() {
+    public void changeNameUserProfileWithoutAuth() {
         userClient.createUser(userClient.getCorrectUser());
         patchUserProfile.checkChangeDataUserProfileWithoutAuth(patchUserProfile.changeUserWithoutAuth(patchUserProfile.getChangeNameUserProfile()));
     }
@@ -55,7 +55,7 @@ public class TestingPatchUserProfile {
 
     @Test
     @DisplayName("checking the user email change without authorization")
-    public void changeEmailUserProfileOutAuth(){
+    public void changeEmailUserProfileWithoutAuth(){
         userClient.createUser(userClient.getCorrectUser());
         patchUserProfile.checkChangeDataUserProfileWithoutAuth(patchUserProfile.changeUserWithoutAuth(patchUserProfile.getChangeMailUserProfile()));
     }

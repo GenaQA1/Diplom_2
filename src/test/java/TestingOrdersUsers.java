@@ -30,15 +30,15 @@ public class TestingOrdersUsers {
     }
 
     @Test
-    @DisplayName("Check create order out authorization user and with Ingredient")
-    public void createOrderUsersOutAuthWithIngredient(){
+    @DisplayName("Check create order without authorization user and with Ingredient")
+    public void createOrderUsersWithoutAuthWithIngredient(){
         userClient.createUser(userClient.getCorrectUser());
         orderCreate.checkResponseOrdersUsersWithoutAuth(orderCreate.createOrderUsersWithoutAuth(orderCreate.getOrderWithIngredients()));
     }
 
     @Test
-    @DisplayName("Check create order with authorization user and out Ingredient")
-    public void createOrderUsersWithAuthOutIngredient(){
+    @DisplayName("Check create order with authorization user and without Ingredient")
+    public void createOrderUsersWithAuthWithoutIngredient(){
         userClient.createUser(userClient.getCorrectUser());
         orderCreate.checkOrdersUsersWithAuthWithoutIngredients(orderCreate.createOrderUsersInAuth(userClient.getCorrectUser(),orderCreate.getNullOrder()));
     }

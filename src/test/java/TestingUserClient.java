@@ -33,20 +33,20 @@ public class TestingUserClient {
     }
 
     @Test
-    @DisplayName("Check create user out email")
-    public void registrationUserOutEmail(){
+    @DisplayName("Check create user Without email")
+    public void registrationUserWithoutEmail(){
         userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutMail()));
     }
 
     @Test
-    @DisplayName("Check create user out password")
-    public void registrationUserOutPassword(){
+    @DisplayName("Check create user Without password")
+    public void registrationUserWithoutPassword(){
         userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutPassword()));
     }
 
     @Test
     @DisplayName("Check create user out name")
-    public void registrationUserOutName(){
+    public void registrationUserWithoutName(){
         userClient.checkResponseErrorInBody(userClient.createUser(userClient.getUserWithoutName()));
     }
 }
